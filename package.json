@@ -1,0 +1,109 @@
+{
+    "name": "quantum-remote-control",
+    "displayName": "Quantum Remote Control",
+    "description": "Controle remoto mobile para o Agent Panel do Antigravity-IDE via QR Code e WebSockets",
+    "version": "1.0.11",
+    "publisher": "AtenaSYS",
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Machine Learning",
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "quantum-remote-sidebar",
+                    "title": "Quantum Remote",
+                    "icon": "resources/icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "quantum-remote-sidebar": [
+                {
+                    "type": "webview",
+                    "id": "quantumRemote.controlPanel",
+                    "name": "Dispositivo Mobile",
+                    "icon": "resources/icon.svg"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "quantumRemote.startServer",
+                "title": "Quantum Remote: Iniciar Servidor e Exibir QR Code"
+            },
+            {
+                "command": "quantumRemote.stopServer",
+                "title": "Quantum Remote: Encerrar Servidor"
+            },
+            {
+                "command": "quantumRemote.restartServer",
+                "title": "Quantum Remote: Reiniciar Servidor"
+            },
+            {
+                "command": "quantumRemote.regenerateToken",
+                "title": "Quantum Remote: Regenerar Token de Acesso"
+            }
+        ],
+        "configuration": {
+            "title": "Quantum Remote",
+            "properties": {
+                "quantumRemote.port": {
+                    "type": "integer",
+                    "default": 48291,
+                    "description": "Porta TCP local utilizada pelo servidor do Quantum Remote."
+                },
+                "quantumRemote.autoStart": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Iniciar o servidor do Quantum Remote automaticamente ao ativar a extensão."
+                },
+                "quantumRemote.connectionMode": {
+                    "type": "string",
+                    "enum": [
+                        "local",
+                        "cloudflare"
+                    ],
+                    "default": "local",
+                    "description": "Modo de conexão: 'local' (mesma rede Wi-Fi) ou 'cloudflare' (túnel seguro para acesso via 4G/5G ou remoto)."
+                },
+                "quantumRemote.cloudflareTunnelToken": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Token de autenticação do Cloudflare Tunnel para uso com Named Tunnel próprio (opcional)."
+                },
+                "quantumRemote.cloudflareCustomDomain": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Domínio customizado associado ao túnel Cloudflare (ex: https://meu-remote.meusite.com)."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "package": "npx @vscode/vsce package --allow-missing-repository"
+    },
+    "dependencies": {
+        "qrcode": "^1.5.3",
+        "ws": "^8.16.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.0",
+        "@types/qrcode": "^1.5.5",
+        "@types/vscode": "^1.85.0",
+        "@types/ws": "^8.5.10",
+        "typescript": "^5.3.3"
+    }
+}
